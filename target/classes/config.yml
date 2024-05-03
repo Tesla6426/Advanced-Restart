@@ -1,0 +1,57 @@
+# AdvancedRestart by _txsla and Thorium
+# &<> color codes supported
+# set messages:'' to disable
+
+# Restarts server when there are no players online
+# Timer starts when the last player leaves
+# Will not restart server if no players have joined
+inactiveRestart:
+  enabled: false
+  timer: 300 #seconds
+  message: '&aNo players online: Restarting'
+
+# Restart if server has been running for a certain amount of time
+periodicRestart:
+  enabled: true
+  duration: 1440 #minutes
+  message: '&aServer runtime: %RUNTIME minutes - Restarting'
+
+# Restart if server gets too laggy
+lagRestart:
+  lowTPS:
+    enabled: false
+    minTPS: 5 #TPS
+    checks: 3 # how many consecutive checks before restart
+    message: '&4Server TPS dropped below %TPS - Restarting'
+  lowMemory:
+    enabled: false
+    maxMemUsage: 8192 #MB used
+    checks: 3 # how many consecutive checks before restart
+    message: '&4Server RAM usage exceeded %MEM - Restarting'
+
+# Sets a warning period before restart
+# only applies to periodicRestart timer
+restartWarning:
+  # Sends a message x seconds before the server restarts
+  secondsWarn:
+    enabled: true
+    seconds: 5 #seconds
+    countdown: true #send the message every second?
+    message: '&cServer restarting in %S seconds!'
+  # Sends a message x minutes before the server restarts
+  minuteWarn:
+    enabled: false
+    minutes: 5
+    countdown: true #send the message every minute?
+    message: '&aServer restarting in %M minutes!'
+
+# Server shutdown method
+# 1 = Bukkit.shutdown()
+# 2 = Bukkit.spigot().restart()
+# 3 = /stop
+# 4 = /restart
+shutdownMethod: 1
+shutdownMessage: '&4Stopping Server'
+
+#used for debug and development, false by default
+dev: false

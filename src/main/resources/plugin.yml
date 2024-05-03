@@ -1,0 +1,4 @@
+name: AdvancedRestart
+version: '${project.version}'
+main: net.txsla.advancedrestart.AdvancedRestart
+api-version: '1.20'

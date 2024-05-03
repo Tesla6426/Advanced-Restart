@@ -1,0 +1,4 @@
+name: AdvancedRestart
+version: '1.0-dev5.2.24'
+main: net.txsla.advancedrestart.AdvancedRestart
+api-version: '1.20'
