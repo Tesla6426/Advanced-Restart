@@ -2,7 +2,7 @@
   <artifact type="jar" build-on-make="true" name="advanced-restart:jar">
     <output-path>$PROJECT_DIR$/../builds</output-path>
     <root id="archive" name="advanced-restart.jar">
-      <element id="module-output" name="advanced-restart" />
+      <element id="module-output" name="Advanced-Restart" />
     </root>
   </artifact>
 </component>
