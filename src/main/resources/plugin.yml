@@ -1,4 +1,5 @@
 name: AdvancedRestart
+author: [_txsla]
 version: '${project.version}'
 main: net.txsla.advancedrestart.AdvancedRestart
-api-version: '1.20'
+description: Automatically restarts your server

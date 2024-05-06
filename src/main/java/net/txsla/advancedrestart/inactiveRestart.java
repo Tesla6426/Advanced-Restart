@@ -21,25 +21,17 @@ public class inactiveRestart implements Listener {
         String inactiveMessage = this.plugin.getConfig().getString("inactiveRestart.message");
         String shutdownMessage = this.plugin.getConfig().getString("shutdownMessage");
         int timer = this.plugin.getConfig().getInt("inactiveRestart.timer");
-
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] top"); }
         if(inactiveRestart!= null) inactiveRestart.interrupt();
 
         inactiveRestart = new Thread(()->{
-            if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] thread.start"); }
             long startTime = System.currentTimeMillis();
             while (System.currentTimeMillis() - startTime < timer * 1000.0) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    break;
-                }
+                try { Thread.sleep(1000);} catch (InterruptedException ignore) {}
             }
             if (System.currentTimeMillis() - startTime >= timer * 1000.0) {
                 if (Bukkit.getServer().getOnlinePlayers().isEmpty()) {
                     if (inactiveMessage != null) sendMessage( (inactiveMessage).replace('&', '§') );
                     try {Thread.sleep(3000);} catch (InterruptedException ignored) {}
-                    if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] shutdown"); }
                     if (shutdownMessage != null) { sendMessage( (shutdownMessage).replace('&', '§') ); }
                     switch (this.plugin.getConfig().getInt("shutdownMethod"))
                     {
@@ -63,7 +55,6 @@ public class inactiveRestart implements Listener {
                 }
             }
         });
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] thread.end"); }
         inactiveRestart.start();
     }
 }

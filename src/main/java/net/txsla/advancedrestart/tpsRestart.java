@@ -19,7 +19,6 @@ public class tpsRestart{
         tpsRestart = new Thread(()->
         {
             int checkFailed = 0;
-            if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[tpsRestart.tpsManager] thread.start" + getTPS());}
             while (true) {
                 if (getTPS() < minTPS) checkFailed++;
                 if ((getTPS() > minTPS) && checkFailed > 0) checkFailed--;
@@ -28,13 +27,11 @@ public class tpsRestart{
                 try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
             }
         });
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[tpsRestart.tpsManager] thread.stop; tps: "+getTPS());}
         tpsRestart.start();
     }
     private void stopServer() {
-        if (this.plugin.getConfig().getBoolean("dev")) sendMessage("[tpsRestart.tpsManager] server stopping; tps: "+getTPS());
         if (this.plugin.getConfig().getString("lagRestart.lowTPS.message") != null) sendMessage( (this.plugin.getConfig().getString("lagRestart.lowTPS.message")).replace('&', '§').replaceAll("%TPS", ""+getTPS() ));
-        try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
+        try { Thread.sleep(3000); } catch (InterruptedException ignore) { }
         if (this.plugin.getConfig().getString("shutdownMessage") != null) sendMessage( (this.plugin.getConfig().getString("shutdownMessage")).replace('&', '§') );
         switch (this.plugin.getConfig().getInt("shutdownMethod"))
         {

@@ -24,7 +24,6 @@ public class dailyRestart {
         if(dev){for(int i=0;schedule.length>i;i++){try{Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] schedule list ["+i+"] :"+schedule[i][0]+" "+schedule[i][1] );}catch(Exception e){ break;}}}
         dailyRestart = new Thread(()->
         {
-            if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] thread.start");}
             boolean restart = false;
             while (!restart) {
                 try {Thread.sleep(15000);} catch (Exception e) {Thread.currentThread().interrupt();}
@@ -35,7 +34,6 @@ public class dailyRestart {
             }
             stopServer();
         });
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] thread.end");}
         dailyRestart.start();
     }
 
@@ -67,11 +65,11 @@ public class dailyRestart {
             if (minuteCountdown) {
                 for (int i = minutes; i > 0; i--) {
                     if (minuteMessage != null) { sendMessage((minuteMessage).replace('&', '§').replaceAll("%M", Integer.toString(i))); }
-                    try { Thread.sleep(60000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                    try { Thread.sleep(60000); } catch (InterruptedException ignore) {  }
                 }
             }else {
                 if (minuteMessage != null) { sendMessage((minuteMessage).replace('&', '§').replaceAll("%M", Integer.toString(minutes) )); }
-                try { Thread.sleep((long) (minutes * 60000.0) ); } catch (InterruptedException e) {  if (dev) Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] error?" + e); }
+                try { Thread.sleep((long) (minutes * 60000.0) ); } catch (InterruptedException ignore) {  }
             }
         }
         //secondsWarn
@@ -80,11 +78,11 @@ public class dailyRestart {
             if (secondsCountdown) {
                 for (int i = seconds; i > 0; i--) {
                     if (secondsMesssage != null) { sendMessage((secondsMesssage).replace('&', '§').replaceAll("%S", Integer.toString(i))); }
-                    try { Thread.sleep(1000); } catch (InterruptedException e) { if (dev) Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] error?" + e); }
+                    try { Thread.sleep(1000); } catch (InterruptedException ignore) { }
                 }
             }else {
                 if (secondsMesssage != null) sendMessage((secondsMesssage).replace('&', '§').replaceAll("%S", Integer.toString(seconds) ));
-                try { Thread.sleep((long) seconds * 1000); } catch (InterruptedException e) {  if (dev) Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] error?" + e); }
+                try { Thread.sleep((long) seconds * 1000); } catch (InterruptedException ignore) { }
             }
         }
         //shutdown

@@ -8,7 +8,6 @@ public class periodicRestart {
     public void sendMessage(String message) { for (Player p : Bukkit.getOnlinePlayers()) { p.sendMessage(message);} }
     public periodicRestart(AdvancedRestart plugin) {
         this.plugin = plugin;
-        if (this.plugin.getConfig().getBoolean("dev")) {Bukkit.broadcastMessage("[periodicRestart.periodicRestart] top"); }
         setTimer();
     }
     public void setTimer()
@@ -24,14 +23,10 @@ public class periodicRestart {
         int seconds = this.plugin.getConfig().getInt("restartWarning.secondsWarn.seconds");
         int minutes = this.plugin.getConfig().getInt("restartWarning.minuteWarn.minutes");
         int duration = this.plugin.getConfig().getInt("periodicRestart.duration") * 60;
-
         boolean dev = this.plugin.getConfig().getBoolean("dev");
-
-
         if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] startTime = " + startTime); }
         periodicRestart = new Thread(()->
         {
-            if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] thread.start"); }
             while (System.currentTimeMillis() - startTime < duration * 1000.0) { try {Thread.sleep(1000);}catch(InterruptedException e) {Thread.currentThread().interrupt();} }
             if (System.currentTimeMillis() - startTime >= duration * 1000.0)
             {
@@ -84,7 +79,6 @@ public class periodicRestart {
                 }
             }
         });
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] thread.end"); }
         periodicRestart.start();
     }
 }

@@ -20,7 +20,6 @@ public class ramRestart{
         ramRestart = new Thread(()->
         {
             int checkFailed = 0;
-            if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramManager] thread.start" + getRAM());}
             while (true) {
                 if (getRAM() > maxMem) checkFailed++;
                 if ((getRAM() < maxMem) && checkFailed > 0) checkFailed--;
@@ -29,11 +28,9 @@ public class ramRestart{
                 try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
             }
         });
-        if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramManager] thread.stop; ram used: "+getRAM());}
         ramRestart.start();
     }
     private void stopServer() {
-        if (this.plugin.getConfig().getBoolean("dev")) {Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramManager] server stopping; ram used: "+getRAM());}
         if (this.plugin.getConfig().getString("lagRestart.lowMemory.message") != null) sendMessage( (this.plugin.getConfig().getString("lagRestart.lowMemory.message")).replace('&', '§').replaceAll("%MEM", ""+getRAM() ));
         try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
         if (this.plugin.getConfig().getString("shutdownMessage") != null) sendMessage( (this.plugin.getConfig().getString("shutdownMessage")).replace('&', '§'));
@@ -57,7 +54,7 @@ public class ramRestart{
     public double getRAM() {
         double RAM;
         try { RAM = (r.totalMemory() - r.freeMemory()) / 1048576F;
-        } catch (IllegalArgumentException e) { RAM = 34404; }
+        } catch (IllegalArgumentException ignore) { RAM = 34404; }
         return RAM;
     }
 }
