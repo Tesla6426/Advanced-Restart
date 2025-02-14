@@ -6,7 +6,7 @@
 
     <groupId>net.txsla</groupId>
     <artifactId>Advanced-Restart</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>Advanced Restart</name>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
