@@ -1,5 +1,5 @@
 # AdvancedRestart by _txsla / NBT Archives
-# &x color format supported
+# Messages are formatted with MiniMessage or &<> codes
 # set messages:'' to disable
 
 # Restarts daily or a certain day/time of the week
@@ -59,10 +59,13 @@ lagRestart:
 # Server shutdown method
 # 1 = Bukkit.shutdown()
 # 2 = Bukkit.spigot().restart()
-# 3 = /stop
-# 4 = /restart
+# 3 = only run shutdown commands
 shutdownMethod: 1
 shutdownMessage: '&4Stopping Server'
+shutdownCommands:
+  - '/command 1'
+  - '/command 2'
+  - '/command ...'
 
 #used for debug and development
 dev: false

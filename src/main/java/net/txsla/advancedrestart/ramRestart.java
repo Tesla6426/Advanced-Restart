@@ -33,6 +33,9 @@ public class ramRestart{
     private void stopServer() {
         if (this.plugin.getConfig().getString("lagRestart.lowMemory.message") != null) sendMessage( (this.plugin.getConfig().getString("lagRestart.lowMemory.message")).replace('&', '§').replaceAll("%MEM", ""+getRAM() ));
         try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
+
+        stopServer.shutdown();
+
         if (this.plugin.getConfig().getString("shutdownMessage") != null) sendMessage( (this.plugin.getConfig().getString("shutdownMessage")).replace('&', '§'));
         switch (this.plugin.getConfig().getInt("shutdownMethod"))
         {

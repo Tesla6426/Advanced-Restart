@@ -12,14 +12,29 @@ public final class AdvancedRestart extends JavaPlugin {
         getLogger().warning("You are currently running a dev build of Advanced Restart");
 
         getLogger().info("Loading configs...");
-        if ( getConfig().getBoolean("dev") ) { Bukkit.getServer().getConsoleSender().sendMessage("[AdvancedRestart] §4Dev Mode Enabled"); }
-        if ( getConfig().getBoolean("inactiveRestart.enabled") ) { getLogger().info("inactiveRestart Enabled"); getServer().getPluginManager().registerEvents(new inactiveRestart(this),this); }
-        if ( getConfig().getBoolean("periodicRestart.enabled") ) { getLogger().info("periodicRestart Enabled");  new periodicRestart(this);}
-        if ( getConfig().getBoolean("lagRestart.lowTPS.enabled") ) { getLogger().info("tpsRestart Enabled");  new tpsRestart(this);}
-        if ( getConfig().getBoolean("lagRestart.lowMemory.enabled") ) { getLogger().info("ramRestart Enabled");  new ramRestart(this);}
-        if ( getConfig().getBoolean("scheduledRestart.enabled") ) { getLogger().info("scheduledRestart Enabled");  new dailyRestart(this);}
-        getLogger().info("Config load complete!");
+        if (config.load()) getLogger().info("Config load complete!");
+        if ( config.debug ) { Bukkit.getServer().getConsoleSender().sendMessage("[AdvancedRestart] §4Debug Mode Enabled"); }
 
+        getLogger().info("Starting threads...");
+        if (start()) getLogger().info("Threads started!");
+
+    }
+    public boolean start() {
+        // Start/Load the different restarting classes
+        try {
+            if ( config.inactiveRestart_enabled ) { getLogger().info("inactiveRestart Enabled"); getServer().getPluginManager().registerEvents(new inactiveRestart(this),this); }
+            if ( config.periodicRestart_enabled ) { getLogger().info("periodicRestart Enabled");  new periodicRestart(this);}
+            if ( config.lagRestart_lowTPS_enabled ) { getLogger().info("tpsRestart Enabled");  new tpsRestart(this);}
+            if ( config.lagRestart_lowMemory_enabled ) { getLogger().info("ramRestart Enabled");  new ramRestart(this);}
+            if ( config.scheduledRestart_enabled ) { getLogger().info("scheduledRestart Enabled");  new dailyRestart(this);}
+        } catch (Exception e) {
+            // throw error if you cannot load the classes
+            getLogger().warning("[Advanced Restart] Failed to start threads");
+            e.printStackTrace();
+            System.out.println("\n\n");
+            return false;
+        }
+        return true;
     }
     @Override
     public void onDisable() {
