@@ -6,24 +6,26 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class config {
-    // To store ALL config options (yes, this is redundant)
+    public static boolean allow_restart;
+    public static double disable_timer;
     public static boolean reload() { return load(); } // :)
-    public static boolean load() {
-        try {
-            // load configs (also make work with /config reload later on)
-            // FOR THE FUTURE: load full config into variables for easier and more redundant reloads
 
-        } catch (Exception e) {
-            // throw error if you cannot load the configs
-            System.out.println("\n\n[Advanced Restart] Failed to load configs\n");
-            e.printStackTrace();
-            System.out.println("\n\n");
+    public static boolean load() {
+        // load all configs (also make work with /config reload later on)
+        try {
+            allow_restart = true;
+
+
+
+
+        }
+        // throw error if you cannot load the configs
+        catch (Exception e) {
+            System.out.println("\n\n[Advanced Restart] Failed to load configs\n" + e + "\n\n");
             return false;
         }
         return true;
     }
-
-    public static int messageFormat;
 
     public static boolean scheduledRestart_enabled;
     public static ArrayList<String> scheduledRestart_schedule;
@@ -35,12 +37,12 @@ public class config {
     public static String periodicRestart_message;
 
     public static boolean restartWarning_secondsWarn_enabled;
-    public static double restartWarning_secondsWarn_seconds;
+    public static int restartWarning_secondsWarn_seconds;
     public static boolean restartWarning_secondsWarn_countdown;
     public static String restartWarning_secondsWarn_message;
 
     public static boolean restartWarning_minuteWarn_enabled;
-    public static double restartWarning_minuteWarn_seconds;
+    public static int restartWarning_minuteWarn_minutes;
     public static boolean restartWarning_minuteWarn_countdown;
     public static String restartWarning_minuteWarn_message;
 

@@ -23,9 +23,9 @@ public final class AdvancedRestart extends JavaPlugin {
         // Start/Load the different restarting classes
         try {
             if ( config.inactiveRestart_enabled ) { getLogger().info("inactiveRestart Enabled"); getServer().getPluginManager().registerEvents(new inactiveRestart(this),this); }
-            if ( config.periodicRestart_enabled ) { getLogger().info("periodicRestart Enabled");  new periodicRestart(this);}
-            if ( config.lagRestart_lowTPS_enabled ) { getLogger().info("tpsRestart Enabled");  new tpsRestart(this);}
-            if ( config.lagRestart_lowMemory_enabled ) { getLogger().info("ramRestart Enabled");  new ramRestart(this);}
+            if ( config.periodicRestart_enabled ) { getLogger().info("periodicRestart Enabled");  new periodicRestart();}
+            if ( config.lagRestart_lowTPS_enabled ) { getLogger().info("tpsRestart Enabled");  new tpsRestart();}
+            if ( config.lagRestart_lowMemory_enabled ) { getLogger().info("ramRestart Enabled");  new ramRestart();}
             if ( config.scheduledRestart_enabled ) { getLogger().info("scheduledRestart Enabled");  new dailyRestart(this);}
         } catch (Exception e) {
             // throw error if you cannot load the classes
@@ -35,6 +35,10 @@ public final class AdvancedRestart extends JavaPlugin {
             return false;
         }
         return true;
+    }
+    public boolean stop() {
+        // kill all threads
+        return false;
     }
     @Override
     public void onDisable() {

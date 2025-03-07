@@ -1,63 +1,47 @@
 package net.txsla.advancedrestart;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class ramRestart{
-    private final AdvancedRestart plugin;
+    int checks_failed;
     Runtime r = Runtime.getRuntime();
-    public void sendMessage(String message) { for (Player p : Bukkit.getOnlinePlayers()) { p.sendMessage(message);} }
     Thread ramRestart;
-    public ramRestart(AdvancedRestart plugin) {
-        this.plugin = plugin;
-        if (this.plugin.getConfig().getBoolean("dev")) {Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramRestart] top");}
+    public ramRestart() {
+        if (config.debug) Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramRestart] top");
         ramManager();
     }
     public void ramManager() {
-        int maxMem = this.plugin.getConfig().getInt("lagRestart.lowMemory.maxMemUsage");
-        int maxChecks = this.plugin.getConfig().getInt("lagRestart.lowMemory.checks");
-        boolean dev = this.plugin.getConfig().getBoolean("dev");
         ramRestart = new Thread(()->
         {
-            int checkFailed = 0;
+            checks_failed = 0;
             while (true) {
-                if (getRAM() > maxMem) checkFailed++;
-                if ((getRAM() < maxMem) && checkFailed > 0) checkFailed--;
-                if (dev) { Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramManager] ram used: " + getRAM() + "; checksfailed: " + checkFailed);}
-                if (checkFailed > maxChecks) { stopServer(); break; }
+                // increment or decrement checks counter depending on tps
+                // optimise later with if-else
+                if (getRAM() > config.lagRestart_lowMemory_maxMemUsage) checks_failed++;
+                if ((getRAM() < config.lagRestart_lowMemory_maxMemUsage) && checks_failed > 0) checks_failed--;
+
+                // debug
+                if (config.debug) Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramManager] ram used: " + getRAM() + "; checksfailed: " + checks_failed);
+
+                // stop server if checks have exceeded the threshold
+                if (checks_failed > config.lagRestart_lowMemory_checks) { stopServer(); break; }
+
+                // wait 3 seconds between checks
                 try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
             }
         });
         ramRestart.start();
     }
     private void stopServer() {
-        if (this.plugin.getConfig().getString("lagRestart.lowMemory.message") != null) sendMessage( (this.plugin.getConfig().getString("lagRestart.lowMemory.message")).replace('&', '§').replaceAll("%MEM", ""+getRAM() ));
-        try { Thread.sleep(3000); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
-
+        // send low memory message and shut down server
+        if (config.lagRestart_lowMemory_message != null)
+           format.sendMessage( config.lagRestart_lowMemory_message.replaceAll("%MEM", ""+getRAM() ));
         stopServer.shutdown();
-
-        if (this.plugin.getConfig().getString("shutdownMessage") != null) sendMessage( (this.plugin.getConfig().getString("shutdownMessage")).replace('&', '§'));
-        switch (this.plugin.getConfig().getInt("shutdownMethod"))
-        {
-            case 2:
-                Bukkit.spigot().restart();
-                break;
-            case 3:
-                Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "stop");
-                break;
-            case 4: ;
-                Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "restart");
-                break;
-            case 1:
-            default:
-                Bukkit.shutdown();
-                break;
-        }
     }
     public double getRAM() {
-        double RAM;
-        try { RAM = (r.totalMemory() - r.freeMemory()) / 1048576F;
-        } catch (IllegalArgumentException ignore) { RAM = 34404; }
-        return RAM;
+        try {
+            return (r.totalMemory() - r.freeMemory()) / 1048576F;
+        } catch (Exception e) { System.out.println("[AdvancedRestart.ramRestart] Unable to read server RAM\n" + e); }
+        return 34404;
     }
 }

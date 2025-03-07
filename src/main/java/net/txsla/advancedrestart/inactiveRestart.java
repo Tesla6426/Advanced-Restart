@@ -17,7 +17,6 @@ public class inactiveRestart implements Listener {
             setTimer();
     }
     public void setTimer() {
-        boolean dev = this.plugin.getConfig().getBoolean("dev");
         String inactiveMessage = this.plugin.getConfig().getString("inactiveRestart.message");
         String shutdownMessage = this.plugin.getConfig().getString("shutdownMessage");
         int timer = this.plugin.getConfig().getInt("inactiveRestart.timer");
@@ -50,7 +49,7 @@ public class inactiveRestart implements Listener {
                             break;
                     }
                 }else {
-                    if (dev) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] players online - no restart"); }
+                    if (config.debug) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] players online - no restart"); }
                     setTimer();
                 }
             }
