@@ -1,8 +1,5 @@
 package net.txsla.advancedrestart;
 
-import org.bukkit.Bukkit;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class config {
@@ -15,6 +12,7 @@ public class config {
         try {
             allow_restart = true;
 
+            //this.plugin.getConfig().getBoolean("restartWarning.secondsWarn.enabled");
 
 
 

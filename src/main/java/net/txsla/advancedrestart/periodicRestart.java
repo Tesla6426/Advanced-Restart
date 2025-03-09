@@ -1,4 +1,5 @@
 package net.txsla.advancedrestart;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

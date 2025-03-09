@@ -7,47 +7,29 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 public class inactiveRestart implements Listener {
     Thread inactiveRestart;
-    private final AdvancedRestart plugin;
-    public inactiveRestart(AdvancedRestart plugin) {this.plugin = plugin;}
-    public void sendMessage(String message) { for (Player p : Bukkit.getOnlinePlayers()) { p.sendMessage(message);} Bukkit.getServer().getConsoleSender().sendMessage(message);}
+
+    public inactiveRestart() { }
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         // if inactiveRestart is enabled, (re)start timer
-        if (this.plugin.getConfig().getBoolean("dev")) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.onPlayerJoin] Player Joined"); }
+        if (config.debug) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.onPlayerJoin] Player Joined"); }
             setTimer();
     }
     public void setTimer() {
-        String inactiveMessage = this.plugin.getConfig().getString("inactiveRestart.message");
-        String shutdownMessage = this.plugin.getConfig().getString("shutdownMessage");
-        int timer = this.plugin.getConfig().getInt("inactiveRestart.timer");
-        if(inactiveRestart!= null) inactiveRestart.interrupt();
+
+        if(inactiveRestart!=null) inactiveRestart.interrupt();
 
         inactiveRestart = new Thread(()->{
             long startTime = System.currentTimeMillis();
-            while (System.currentTimeMillis() - startTime < timer * 1000.0) {
+            while (System.currentTimeMillis() - startTime < config.inactiveRestart_timer * 1000.0) {
                 try { Thread.sleep(1000);} catch (InterruptedException ignore) {}
             }
-            if (System.currentTimeMillis() - startTime >= timer * 1000.0) {
+            if (System.currentTimeMillis() - startTime >= config.inactiveRestart_timer * 1000.0) {
                 if (Bukkit.getServer().getOnlinePlayers().isEmpty()) {
-                    if (inactiveMessage != null) sendMessage( (inactiveMessage).replace('&', '§') );
-                    try {Thread.sleep(3000);} catch (InterruptedException ignored) {}
-                    if (shutdownMessage != null) { sendMessage( (shutdownMessage).replace('&', '§') ); }
-                    switch (this.plugin.getConfig().getInt("shutdownMethod"))
-                    {
-                        case 2:
-                            Bukkit.spigot().restart();
-                            break;
-                        case 3:
-                            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "stop");
-                            break;
-                        case 4:
-                            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "restart");
-                            break;
-                        case 1:
-                        default:
-                            Bukkit.shutdown();
-                            break;
-                    }
+
+                    stopServer.send_message_and_sleep(3000, config.inactiveRestart_message);
+                    stopServer.shutdown();
+
                 }else {
                     if (config.debug) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] players online - no restart"); }
                     setTimer();
