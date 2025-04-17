@@ -1,5 +1,7 @@
-package net.txsla.advancedrestart;
+package net.txsla.advancedrestart.threads;
 
+import net.txsla.advancedrestart.config;
+import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
 
 public class stopServer {

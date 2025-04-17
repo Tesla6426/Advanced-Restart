@@ -1,4 +1,6 @@
-package net.txsla.advancedrestart;
+package net.txsla.advancedrestart.threads;
+import net.txsla.advancedrestart.config;
+import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -17,7 +19,7 @@ public class dailyRestart {
     private void scheduleManager() {
 
         // print schedule list to console if debug is enabled
-        if(config.debug) {for(int i=0;schedule.length>i;i++){try{Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] schedule list ["+i+"] :"+schedule[i][0]+" "+schedule[i][1] );}catch(Exception e){ break;}}}
+        if(config.debug) {for(int i = 0; schedule.length>i; i++){try{Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] schedule list ["+i+"] :"+schedule[i][0]+" "+schedule[i][1] );}catch(Exception e){ break;}}}
 
         dailyRestart = new Thread(()->
         {

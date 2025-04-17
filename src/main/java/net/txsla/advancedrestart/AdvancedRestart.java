@@ -1,24 +1,34 @@
 package net.txsla.advancedrestart;
 
+import net.txsla.advancedrestart.threads.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedRestart extends JavaPlugin {
     @Override
     public void onEnable() {
-    saveDefaultConfig();
-    int pluginId = 21811;
-    Metrics metrics = new Metrics(this, pluginId);
+        saveDefaultConfig();
+
+        // bstats - thank you for contributing :)
+        int pluginId = 21811;
+        Metrics metrics = new Metrics(this, pluginId);
 
         getLogger().warning("You are currently running a dev build of Advanced Restart");
 
+        // load configs
         getLogger().info("Loading configs...");
+        config.plugin = this;
         if (config.load()) getLogger().info("Config load complete!");
+            else getLogger().warning("PLUGIN FAILED TO PROPERLY LOAD CONFIGS - CHECK /plugins/AdvancedRestart/config.yml FOR MISTAKES!");
+
+
+        // let user know debug is enabled
         if ( config.debug ) { Bukkit.getServer().getConsoleSender().sendMessage("[AdvancedRestart] §4Debug Mode Enabled"); }
 
+        // start necessary processes
         getLogger().info("Starting threads...");
         if (start()) getLogger().info("Threads started!");
-
+            else getLogger().warning("PLUGIN FAILED TO PROPERLY LOAD THREADS - CHECK /plugins/AdvancedRestart/config.yml FOR MISTAKES!");
     }
     public boolean start() {
         // Start/Load the different restarting classes
@@ -30,7 +40,7 @@ public final class AdvancedRestart extends JavaPlugin {
             if ( config.scheduledRestart_enabled ) { getLogger().info("scheduledRestart Enabled");  new dailyRestart();}
         } catch (Exception e) {
             // throw error if you cannot load the classes
-            System.out.println("[Advanced Restart] Failed to start threads\n" + e + "\n\n");
+            getLogger().warning("[Advanced Restart] Failed to start threads\n" + e + "\n\n");
             return false;
         }
         return true;

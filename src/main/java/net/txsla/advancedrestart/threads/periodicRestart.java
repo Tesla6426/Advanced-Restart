@@ -1,11 +1,10 @@
-package net.txsla.advancedrestart;
+package net.txsla.advancedrestart.threads;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
+import net.txsla.advancedrestart.config;
+import net.txsla.advancedrestart.format;
 public class periodicRestart {
     Thread periodicRestart;
-    public void sendMessage(String message) { for (Player p : Bukkit.getOnlinePlayers()) { p.sendMessage(message);} }
     public periodicRestart() {
         setTimer();
     }
