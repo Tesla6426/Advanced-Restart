@@ -16,7 +16,8 @@ public class config {
         try {
             if (debug) System.out.println("[Advanced Restart] Loading configs...");
             allow_restart = false;
-
+            // redundant the first time, but allows this class to be reused
+            plugin.reloadConfig();
 
             //set configs to mem
             scheduledRestart_enabled = plugin.getConfig().getBoolean("scheduledRestart.enabled");
@@ -48,8 +49,8 @@ public class config {
 
             lagRestart_lowMemory_enabled = plugin.getConfig().getBoolean("lagRestart.lowMemory.enabled");
             lagRestart_lowMemory_maxMemUsage = plugin.getConfig().getInt("lagRestart.lowMemory.maxMemUsage");
-            lagRestart_lowMemory_checks = plugin.getConfig().getInt("lagRestart_lowMemory_checks");
-            lagRestart_lowMemory_message = plugin.getConfig().getString("lagRestart_lowMemory_message");
+            lagRestart_lowMemory_checks = plugin.getConfig().getInt("lagRestart.lowMemory.checks");
+            lagRestart_lowMemory_message = plugin.getConfig().getString("lagRestart.lowMemory.message");
 
             shutdownMethod = plugin.getConfig().getInt("shutdownMethod");
             shutdownMessage = plugin.getConfig().getString("shutdownMessage");

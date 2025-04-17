@@ -37,7 +37,6 @@ public class schedule_restart {
     }
 
     private void parseSchedule() {
-
         List<String> uf = config.scheduledRestart_schedule;
         schedule = new String[uf.size()][2];
         for (int i = 0; i < uf.size(); i++)
@@ -47,9 +46,13 @@ public class schedule_restart {
         }
     }
     private void stopServer() {
-        if (config.debug) {Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager] server stopping;");}
+        if (config.debug) {System.out.println("[dailyRestart.scheduleManager] server stopping;");}
 
-        format.sendMessage(config.scheduledRestart_message);
+        try {
+            format.sendMessage(config.scheduledRestart_message);
+        } catch (Exception e) {
+            if (config.debug) System.out.println(e);
+        }
 
         //minuteWarn
         if (config.restartWarning_minuteWarn_enabled)
@@ -62,10 +65,12 @@ public class schedule_restart {
                 );
             }
             else {
-                stop_server.send_message_and_sleep(
-                        config.restartWarning_minuteWarn_minutes * 60000,
-                        config.restartWarning_minuteWarn_message.replaceAll("%M", ""+config.restartWarning_minuteWarn_minutes)
-                );
+                try {
+                    stop_server.send_message_and_sleep(
+                            config.restartWarning_minuteWarn_minutes * 60000,
+                            config.restartWarning_minuteWarn_message.replaceAll("%M", "" + config.restartWarning_minuteWarn_minutes)
+                    );
+                } catch (Exception e) {if (config.debug) System.out.println(e);}
             }
         }
         //secondsWarn
@@ -79,10 +84,12 @@ public class schedule_restart {
                         );
             }
             else {
-                stop_server.send_message_and_sleep(
-                        config.restartWarning_secondsWarn_seconds * 1000 ,
-                        config.restartWarning_secondsWarn_message.replaceAll("%S", ""+config.restartWarning_secondsWarn_seconds)
-                );
+                try {
+                    stop_server.send_message_and_sleep(
+                            config.restartWarning_secondsWarn_seconds * 1000,
+                            config.restartWarning_secondsWarn_message.replaceAll("%S", "" + config.restartWarning_secondsWarn_seconds)
+                    );
+                } catch (Exception e) {if (config.debug) System.out.println(e);}
             }
         }
 

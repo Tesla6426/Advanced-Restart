@@ -35,8 +35,12 @@ public class tps_restart {
     }
     private void stopServer() {
         // send tps restart message and stop server
+        try {
         if (config.lagRestart_lowTPS_message != null)
-            format.sendMessage( config.lagRestart_lowMemory_message.replaceAll("%TPS", ""+getTPS() ));
+            format.sendMessage( config.lagRestart_lowTPS_message.replaceAll("%TPS", ""+getTPS() ));
+        } catch (Exception e) {
+            if (config.debug) System.out.println(e);
+        }
         stop_server.shutdown();
     }
     public double getTPS() {

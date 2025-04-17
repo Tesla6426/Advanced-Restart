@@ -36,8 +36,12 @@ public class ram_restart {
     }
     private void stopServer() {
         // send low memory message and shut down server
-        if (config.lagRestart_lowMemory_message != null)
-           format.sendMessage( config.lagRestart_lowMemory_message.replaceAll("%MEM", ""+getRAM() ));
+        try {
+            if (config.lagRestart_lowMemory_message != null)
+                format.sendMessage(config.lagRestart_lowMemory_message.replaceAll("%MEM", "" + getRAM()));
+        } catch (Exception e) {
+            if (config.debug) System.out.println(e);
+        }
         stop_server.shutdown();
     }
     public double getRAM() {

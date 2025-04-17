@@ -39,7 +39,7 @@ public class main_command implements CommandExecutor, TabExecutor {
                 debug.run(args, sender);
                 break;
             case "config":
-                debug.run(args, sender);
+                config.run(args, sender);
                 break;
             default:
                 return false;
@@ -55,6 +55,7 @@ public class main_command implements CommandExecutor, TabExecutor {
             list.add("enable");
             list.add("status");
             list.add("soft-reload");
+            list.add("stop");
             list.add("debug");
             list.add("config");
             return list;
@@ -70,6 +71,8 @@ public class main_command implements CommandExecutor, TabExecutor {
                 return status.tab(args);
             case "soft-reload":
                 return soft_reload.tab(args);
+            case "stop":
+                return stop.tab(args);
             case "debug":
                 return debug.tab(args);
             case "config":

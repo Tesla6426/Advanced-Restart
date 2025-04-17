@@ -3,10 +3,10 @@ net\txsla\advancedrestart\threads\inactive_restart.class
 net\txsla\advancedrestart\command\main_command.class
 net\txsla\advancedrestart\threads\stop_server.class
 net\txsla\advancedrestart\format.class
-net\txsla\advancedrestart\command\execute.class
 net\txsla\advancedrestart\command\sub\config.class
 net\txsla\advancedrestart\config.class
 net\txsla\advancedrestart\threads\tps_restart.class
+net\txsla\advancedrestart\command\sub\stop.class
 net\txsla\advancedrestart\command\sub\debug.class
 net\txsla\advancedrestart\threads\periodic_restart.class
 net\txsla\advancedrestart\command\sub\disable.class

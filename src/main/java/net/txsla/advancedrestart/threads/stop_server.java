@@ -1,5 +1,6 @@
 package net.txsla.advancedrestart.threads;
 
+import net.txsla.advancedrestart.AdvancedRestart;
 import net.txsla.advancedrestart.config;
 import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
@@ -10,16 +11,29 @@ public class stop_server {
 
         // do not shut down server if user has disabled the plugin
         if (!config.allow_restart) {
-            System.out.println("[Advanced Restart] SHUTDOWN CANCELLED - restarts cancelled for " + ((int) config.disable_timer) + " minutes by an admin");
+            //System.out.println("[Advanced Restart] SHUTDOWN CANCELLED - restarts cancelled for " + ((int) config.disable_timer) + " minutes by an admin");
+            System.out.println("[Advanced Restart] SHUTDOWN CANCELLED: Advanced Restart was disabled by an admin");
             return;
         }
 
         // send shutdown message
-        if (config.shutdownMessage != null) format.sendMessage(config.shutdownMessage);
+        try {
+            if (config.shutdownMessage != null) format.sendMessage(config.shutdownMessage);
+        }catch (Exception e) {
+            if (config.debug) System.out.println(e);
+        }
 
-        // execute shutdown commands (as console)
+        // execute shutdown commands
         if (config.shutdownCommands != null) {
-            // execute shutdown commands here
+            System.out.println("[Advanced Restart] running shutdown commands");
+            for (String command : config.shutdownCommands)
+            {
+                AdvancedRestart.executeCommand(command);
+            }
+            // give the commands 1 second to execute
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {/*ignore*/}
         }
 
         // stop server
@@ -38,8 +52,8 @@ public class stop_server {
         }
     }
 
-
     public static void send_message_and_sleep_recursively(int timer, int cycles, String message) {
+        if (message == null) return;
         // sends a message and sleeps recursively
         for (int i = cycles; i > 0; i--) {
             // this is peak software development 

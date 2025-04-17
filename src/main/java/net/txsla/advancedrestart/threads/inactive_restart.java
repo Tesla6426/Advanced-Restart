@@ -27,7 +27,7 @@ public class inactive_restart implements Listener {
             if (System.currentTimeMillis() - startTime >= config.inactiveRestart_timer * 1000.0) {
                 if (Bukkit.getServer().getOnlinePlayers().isEmpty()) {
 
-                    stop_server.send_message_and_sleep(3000, config.inactiveRestart_message);
+                    if (config.inactiveRestart_message != null) stop_server.send_message_and_sleep(3000, config.inactiveRestart_message);
                     stop_server.shutdown();
 
                 }else {

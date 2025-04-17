@@ -3,12 +3,16 @@ package net.txsla.advancedrestart;
 import net.txsla.advancedrestart.command.main_command;
 import net.txsla.advancedrestart.threads.*;
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedRestart extends JavaPlugin {
+    static Plugin plugin;
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        plugin = getPlugin(this.getClass());
 
         // bstats
         int pluginId = 21811;
@@ -64,5 +68,21 @@ public final class AdvancedRestart extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("plugin disabled");
+    }
+    public static void executeCommand(String command) {
+        // remove leading slash if present
+        if (command.startsWith("/")) command = command.substring(1);
+
+        if (config.debug) System.out.println("[Advanced Restart] executing command " + command);
+
+        // dispatch synchronously
+        if (Bukkit.isPrimaryThread()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        } else {
+            final String com = command; // fuck you java
+            Bukkit.getScheduler().runTask(plugin, () ->
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), com)
+            );
+        }
     }
 }

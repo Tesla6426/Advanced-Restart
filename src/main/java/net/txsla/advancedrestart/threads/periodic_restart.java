@@ -7,7 +7,7 @@ public class periodic_restart {
     Thread periodicRestart;
     public static int remaining() {
         // returns minutes remaining
-        return (int) ((System.currentTimeMillis() - startTime) / 60000 );
+        return (int) ( config.periodicRestart_duration - ((System.currentTimeMillis() - startTime) / 60000 ) );
     }
     public static double startTime;
     public periodic_restart() {
@@ -21,8 +21,9 @@ public class periodic_restart {
         periodicRestart = new Thread(()->
         {
             // sleep until the current time is greater than the startTime - ( current_time + duration )
-            while (System.currentTimeMillis() - startTime < (config.periodicRestart_duration * 60000)) {
+            while ((System.currentTimeMillis() - startTime) < (config.periodicRestart_duration * 60000)) {
                 try {Thread.sleep(1000);} catch(InterruptedException e) {Thread.currentThread().interrupt();}
+                if (config.debug) System.out.println("[PeriodicRestart] countdown " + (System.currentTimeMillis() - startTime) + " < " + (config.periodicRestart_duration * 60000));
             }
 
             // is this if statement unnecessarily redundant?
@@ -31,48 +32,56 @@ public class periodic_restart {
                 if (config.debug) Bukkit.getServer().getConsoleSender().sendMessage("[periodicRestart.setTimer] starting shutdown sequence");
 
                 // send restart message and replace placeholder with runtime
-                if (config.periodicRestart_message != null)
-                    format.sendMessage(config.periodicRestart_message.replaceAll("%RUNTIME", ""+( (int) (System.currentTimeMillis() - startTime)/60000)));
-
+                try {
+                    if (config.periodicRestart_message != null)
+                        format.sendMessage(config.periodicRestart_message.replaceAll("%RUNTIME", "" + ((int) (System.currentTimeMillis() - startTime) / 60000)));
+                } catch (Exception e) {
+                    if (config.debug) System.out.println(e);
+                }
                 //minuteWarn
-                if (config.restartWarning_minuteWarn_enabled)
-                {
-                    // if countdown is enabled then run countdown
-                    if (config.restartWarning_minuteWarn_countdown) {
-                        stop_server.send_message_and_sleep_recursively(
-                                60000,
-                                config.restartWarning_minuteWarn_minutes,
-                                config.restartWarning_minuteWarn_message
-                        );
+                try {
+                    if (config.restartWarning_minuteWarn_enabled) {
+                        // if countdown is enabled then run countdown
+                        if (config.restartWarning_minuteWarn_countdown) {
+                            stop_server.send_message_and_sleep_recursively(
+                                    60000,
+                                    config.restartWarning_minuteWarn_minutes,
+                                    config.restartWarning_minuteWarn_message
+                            );
+                        } else {
+                            // send message and sleep
+                            stop_server.send_message_and_sleep(
+                                    config.restartWarning_minuteWarn_minutes * 60000,
+                                    config.restartWarning_minuteWarn_message.replaceAll("%M", "" + config.restartWarning_minuteWarn_minutes)
+                            );
+                        }
                     }
-                    else {
-                        // send message and sleep
-                        stop_server.send_message_and_sleep(
-                                config.restartWarning_minuteWarn_minutes*60000,
-                                config.restartWarning_minuteWarn_message.replaceAll("%M", ""+config.restartWarning_minuteWarn_minutes)
-                        );
-                    }
+                } catch (Exception e) {
+                    if (config.debug) System.out.println(e);
                 }
 
                 // secondsWarn
-                if (config.restartWarning_secondsWarn_enabled)
-                {
-                    if (config.restartWarning_secondsWarn_countdown) {
-                        // send message every second if countdown is enabled
-                        stop_server.send_message_and_sleep_recursively(
-                                1000,
-                                config.restartWarning_secondsWarn_seconds,
-                                config.restartWarning_secondsWarn_message
-                        );
+                try {
+                    if (config.restartWarning_secondsWarn_enabled) {
+                        if (config.restartWarning_secondsWarn_countdown) {
+                            // send message every second if countdown is enabled
+                            stop_server.send_message_and_sleep_recursively(
+                                    1000,
+                                    config.restartWarning_secondsWarn_seconds,
+                                    config.restartWarning_secondsWarn_message
+                            );
+                        } else {
+                            // send message and sleep
+                            stop_server.send_message_and_sleep(
+                                    config.restartWarning_secondsWarn_seconds * 1000,
+                                    config.restartWarning_secondsWarn_message.replaceAll("%S", "" + config.restartWarning_secondsWarn_seconds)
+                            );
+                        }
                     }
-                    else {
-                        // send message and sleep
-                        stop_server.send_message_and_sleep(
-                                config.restartWarning_secondsWarn_seconds * 1000,
-                                config.restartWarning_secondsWarn_message.replaceAll("%S", ""+config.restartWarning_secondsWarn_seconds)
-                        );
-                    }
+                } catch (Exception e) {
+                    if (config.debug) System.out.println(e);
                 }
+
                 stop_server.shutdown();
             }
         });
