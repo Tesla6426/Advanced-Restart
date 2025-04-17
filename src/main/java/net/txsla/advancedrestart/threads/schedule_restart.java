@@ -6,12 +6,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class dailyRestart {
+public class schedule_restart {
     Thread dailyRestart;
-    private String getTime() { return (DateTimeFormatter.ofPattern("HH:mm")).format(LocalDateTime.now()); }
-    private String getDay() { return LocalDateTime.now().format(DateTimeFormatter.ofPattern("E")).toUpperCase(); }
-    public String[][] schedule;
-    public dailyRestart() {
+    private static String getTime() { return (DateTimeFormatter.ofPattern("HH:mm")).format(LocalDateTime.now()); }
+    private static String getDay() { return LocalDateTime.now().format(DateTimeFormatter.ofPattern("E")).toUpperCase(); }
+    public static String[][] schedule;
+    public schedule_restart() {
         Bukkit.getServer().getConsoleSender().sendMessage("[AdvancedRestart] §4SYNC §cServer day/time: "+getDay()+" "+getTime() );
         parseSchedule();
         scheduleManager();
@@ -55,14 +55,14 @@ public class dailyRestart {
         if (config.restartWarning_minuteWarn_enabled)
         {
             if (config.restartWarning_minuteWarn_countdown) {
-                stopServer.send_message_and_sleep_recursively(
+                stop_server.send_message_and_sleep_recursively(
                         60000,
                         config.restartWarning_minuteWarn_minutes,
                         config.restartWarning_minuteWarn_message
                 );
             }
             else {
-                stopServer.send_message_and_sleep(
+                stop_server.send_message_and_sleep(
                         config.restartWarning_minuteWarn_minutes * 60000,
                         config.restartWarning_minuteWarn_message.replaceAll("%M", ""+config.restartWarning_minuteWarn_minutes)
                 );
@@ -72,20 +72,20 @@ public class dailyRestart {
         if (config.restartWarning_secondsWarn_enabled)
         {
             if (config.restartWarning_secondsWarn_countdown) {
-                stopServer.send_message_and_sleep_recursively(
+                stop_server.send_message_and_sleep_recursively(
                         1000,
                         config.restartWarning_secondsWarn_seconds,
                         config.restartWarning_secondsWarn_message
                         );
             }
             else {
-                stopServer.send_message_and_sleep(
+                stop_server.send_message_and_sleep(
                         config.restartWarning_secondsWarn_seconds * 1000 ,
                         config.restartWarning_secondsWarn_message.replaceAll("%S", ""+config.restartWarning_secondsWarn_seconds)
                 );
             }
         }
 
-        stopServer.shutdown();
+        stop_server.shutdown();
     }
 }

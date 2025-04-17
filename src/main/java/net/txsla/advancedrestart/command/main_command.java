@@ -12,7 +12,7 @@ import net.txsla.advancedrestart.command.sub.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class mainCommand implements CommandExecutor, TabExecutor {
+public class main_command implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         // if no args, then return version
@@ -44,9 +44,6 @@ public class mainCommand implements CommandExecutor, TabExecutor {
             default:
                 return false;
         }
-
-
-        sender.sendMessage(ChatColor.GREEN + "Executed Successful!");
         return true;
     }
     @Override

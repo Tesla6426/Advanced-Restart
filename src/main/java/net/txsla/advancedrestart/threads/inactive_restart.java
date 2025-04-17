@@ -5,10 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class inactiveRestart implements Listener {
+public class inactive_restart implements Listener {
     Thread inactiveRestart;
 
-    public inactiveRestart() { }
+    public inactive_restart() { }
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         // if inactiveRestart is enabled, (re)start timer
@@ -27,8 +27,8 @@ public class inactiveRestart implements Listener {
             if (System.currentTimeMillis() - startTime >= config.inactiveRestart_timer * 1000.0) {
                 if (Bukkit.getServer().getOnlinePlayers().isEmpty()) {
 
-                    stopServer.send_message_and_sleep(3000, config.inactiveRestart_message);
-                    stopServer.shutdown();
+                    stop_server.send_message_and_sleep(3000, config.inactiveRestart_message);
+                    stop_server.shutdown();
 
                 }else {
                     if (config.debug) {Bukkit.getServer().getConsoleSender().sendMessage("[inactiveRestart.SetTimer] players online - no restart"); }

@@ -4,7 +4,7 @@ import net.txsla.advancedrestart.config;
 import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
 
-public class stopServer {
+public class stop_server {
 
     public static void shutdown () {
 

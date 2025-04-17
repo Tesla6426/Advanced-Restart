@@ -1,6 +1,7 @@
 # AdvancedRestart by _txsla / NBT Archives
-# &x color format supported
-# set messages:'' to disable
+# Messages are formatted with MiniMessage or &x legacy format
+# https://docs.advntr.dev/minimessage/format.html
+# set messages to null to disable
 
 # Restarts daily or a certain day/time of the week
 # Use the format 'ddd-hh:mm' ; Use 24h time
@@ -17,52 +18,60 @@ scheduledRestart:
 periodicRestart:
   enabled: false
   duration: 1440 #minutes
-  message: '&aServer runtime: %RUNTIME minutes - Restarting'
+  message: '<green>Server runtime: %RUNTIME minutes - Restarting</green>'
 
 # Sets a warning period before restart
-# only applies to periodicRestart and scheduledRestart
+# Only applies to periodicRestart and scheduledRestart
 restartWarning:
   # Sends a message x seconds before the server restarts
   secondsWarn:
     enabled: true
-    seconds: 5 #seconds
-    countdown: true #send the message every second?
+    seconds: 5
+    countdown: true # send the message every second?
     message: '&cServer restarting in %S seconds!'
-    # Sends a message x minutes before the server restarts
+  # Sends a message x minutes before the server restarts
   minuteWarn:
     enabled: false
     minutes: 5
-    countdown: true #send the message every minute?
+    countdown: true # send the message every minute?
     message: '&aServer restarting in %M minutes!'
 
 # Restarts server when there are no players online
 # Timer cycles from first player join
-# Will not restart server if no players have joined
+# Will NOT restart server if no players have joined
 inactiveRestart:
   enabled: false
-  timer: 300 #seconds
+  timer: 300 # seconds
   message: '&aNo players online: Restarting'
 
 # Restart if server gets too laggy
 lagRestart:
   lowTPS:
     enabled: false
-    minTPS: 10 #TPS
+    minTPS: 10 # TPS
     checks: 3 # how many consecutive failed checks before restart, lower number will restart sooner
     message: '&4Server TPS dropped below %TPS - Restarting'
   lowMemory:
     enabled: false
-    maxMemUsage: 4096 #MB
+    maxMemUsage: 4096 # MB
     checks: 5 # how many consecutive failed checks before restart, lower number will restart sooner
     message: '&4Server RAM usage exceeded %MEM - Restarting'
 
 # Server shutdown method
 # 1 = Bukkit.shutdown()
 # 2 = Bukkit.spigot().restart()
-# 3 = /stop
-# 4 = /restart
+# 3 = only run shutdown commands
 shutdownMethod: 1
 shutdownMessage: '&4Stopping Server'
 
-#used for debug and development
-dev: false
+# Commands to be executed (as console) at shutdown
+# Set to null to disable
+# Do not prefix '/'
+shutdownCommands:
+  - 'playsound entity.experience_orb.pickup master @a ~ ~ ~ 1'
+  - 'title @a title {"color":"red","shadow_color":-8912896,"text":"Server Restarting"}'
+  - 'title @a actionbar {"color":"green","text":"Please rejoin momentarily"}'
+  - 'any number of commands are allowed (invalid commands like this one should be ignored'
+
+
+debug: false

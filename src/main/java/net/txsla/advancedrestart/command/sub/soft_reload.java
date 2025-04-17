@@ -6,7 +6,7 @@ import java.util.List;
 
 public class soft_reload {
     public static void run(String[] args, CommandSender sender) {
-        // reloads configs
+        // reloads configs from file
 
 
     }

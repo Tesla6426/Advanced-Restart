@@ -4,11 +4,11 @@ import net.txsla.advancedrestart.config;
 import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
 
-public class ramRestart{
-    int checks_failed;
+public class ram_restart {
+    public static int checks_failed;
     Runtime r = Runtime.getRuntime();
     Thread ramRestart;
-    public ramRestart() {
+    public ram_restart() {
         if (config.debug) Bukkit.getServer().getConsoleSender().sendMessage("[ramRestart.ramRestart] top");
         ramManager();
     }
@@ -38,7 +38,7 @@ public class ramRestart{
         // send low memory message and shut down server
         if (config.lagRestart_lowMemory_message != null)
            format.sendMessage( config.lagRestart_lowMemory_message.replaceAll("%MEM", ""+getRAM() ));
-        stopServer.shutdown();
+        stop_server.shutdown();
     }
     public double getRAM() {
         try {

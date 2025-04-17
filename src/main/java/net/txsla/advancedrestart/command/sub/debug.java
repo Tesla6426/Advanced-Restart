@@ -19,17 +19,18 @@ public class debug {
                 sender.sendMessage("Debug disabled.");
                 break;
             case "query":
+            default:
                 sender.sendMessage("Debug is set to " + config.debug);
                 break;
-
         }
     }
     public static List<String> tab(String[] args) {
-        if (args.length == 2) {
+        if (args.length > 1) {
          List<String> list = new ArrayList<>();
          list.add("enable");
          list.add("disable");
          list.add("query");
+         return list;
         }
         return null;
     }

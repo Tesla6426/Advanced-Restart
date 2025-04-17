@@ -4,10 +4,10 @@ import net.txsla.advancedrestart.config;
 import net.txsla.advancedrestart.format;
 import org.bukkit.Bukkit;
 
-public class tpsRestart{
-    int checks_failed;
+public class tps_restart {
+    public static int checks_failed;
     Thread tpsRestart;
-    public tpsRestart() {
+    public tps_restart() {
         if (config.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[tpsRestart.tpsRestart] top");}
         tpsManager();
     }
@@ -37,7 +37,7 @@ public class tpsRestart{
         // send tps restart message and stop server
         if (config.lagRestart_lowTPS_message != null)
             format.sendMessage( config.lagRestart_lowMemory_message.replaceAll("%TPS", ""+getTPS() ));
-        stopServer.shutdown();
+        stop_server.shutdown();
     }
     public double getTPS() {
         return Bukkit.getServer().getTPS()[0];

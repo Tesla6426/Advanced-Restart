@@ -1,5 +1,18 @@
 name: AdvancedRestart
 author: [_txsla]
-version: '1.1.1'
+version: '1.2.0-dev'
 main: net.txsla.advancedrestart.AdvancedRestart
 description: Automatically restarts your server
+
+permissions :
+  advancedrestart.command:
+    description: "Allows user to manage AdvancedRestart"
+    default-permission: false
+    default: op
+commands:
+  advancedrestart:
+    description: "Manage Advanced Restart"
+    usage: "/advancedrestart <subcommand>"
+    aliases: ["ar"]
+    permission: advancedrestart.command
+    permission-message: "You do not have permission to use this command"

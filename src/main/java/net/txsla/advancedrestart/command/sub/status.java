@@ -1,6 +1,10 @@
 package net.txsla.advancedrestart.command.sub;
 
 import net.txsla.advancedrestart.config;
+import net.txsla.advancedrestart.threads.periodic_restart;
+import net.txsla.advancedrestart.threads.ram_restart;
+import net.txsla.advancedrestart.threads.schedule_restart;
+import net.txsla.advancedrestart.threads.tps_restart;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -31,9 +35,67 @@ public class status {
         }
         * */
 
-        if (config.allow_restart) {}
+        // whether the plugin is enabled or not
+        if (config.allow_restart) {
+            out += "\n§a    enabled";
+        }
+        else {
+            out += "\n§c    disabled";
+        }
+
+        // scheduled restart information
+        if (config.scheduledRestart_enabled) {
+            out += "\n§a    scheduledRestart";
+            for (String[] time : schedule_restart.schedule) {
+                out += "\n§9      " + time[0] + "-" + time[1];
+            }
+            // print schedule
+        }
+        else {
+            out += "\n§8    scheduledRestart";
+        }
+
+        // periodic restart info
+        if (config.periodicRestart_enabled) {
+            out += "\n§a    periodicRestart";
+            out += "\n§9      timer: " + config.periodicRestart_duration;
+            out += "\n§9      min_remaining: " + periodic_restart.remaining();
+        }
+        else {
+            out += "\n§8    periodicRestart";
+        }
+
+        // inactive restart info
+        if (config.inactiveRestart_enabled) {
+            out += "\n§a    inactiveRestart";
+            out += "\n§9      timer: " + config.inactiveRestart_timer ;
+        }
+        else {
+            out += "\n§8    inactiveRestart";
+        }
+
+        // inactive restart info
+        if (config.lagRestart_lowTPS_enabled) {
+            out += "\n§a    lowTPSRestart";
+            out += "\n§9      min_tps: " + config.lagRestart_lowTPS_minTPS;
+            out += "\n§9      checks_failed: " + tps_restart.checks_failed;
+        }
+        else {
+            out += "\n§8    lowTPSRestart";
+        }
+
+        // inactive restart info
+        if (config.lagRestart_lowMemory_enabled) {
+            out += "\n§a    lowMemoryRestart";
+            out += "\n§9      max_mem_usage: " + config.lagRestart_lowMemory_maxMemUsage;
+            out += "\n§9      checks_failed: " + ram_restart.checks_failed;
+        }
+        else {
+            out += "\n§8    lowMemoryRestart";
+        }
+
+
+        sender.sendMessage(out);
     }
-    public static List<String> tab(String[] args) {
-        return null;
-    }
+    public static List<String> tab(String[] args) { return null; }
 }

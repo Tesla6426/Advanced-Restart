@@ -11,7 +11,5 @@ public class disable {
         config.allow_restart = false;
         sender.sendMessage("Advanced Restart Disabled.");
     }
-    public static List<String> tab(String[] args) {
-        return null;
-    }
+    public static List<String> tab(String[] args) { return null; }
 }
