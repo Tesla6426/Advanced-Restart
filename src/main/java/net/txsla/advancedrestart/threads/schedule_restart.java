@@ -27,8 +27,14 @@ public class schedule_restart {
             while (!restart) {
                 try {Thread.sleep(15000);} catch (Exception e) {Thread.currentThread().interrupt();}
                 for (String[] strings : schedule) {
-                    if (strings[0].matches(getDay()+"|ALL")&&strings[1].matches(getTime())) {restart = true; break; }
-                    if(config.debug){Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager.thread] checking time: "+strings[0]+" "+strings[1]);}
+                    // skip null values
+                    if (strings[0] != null) {
+                        // restart if a match is found
+                        if (strings[0].matches(getDay() + "|ALL") && strings[1].matches(getTime())) {
+                            restart = true; break;
+                        }
+                        if (config.debug) Bukkit.getServer().getConsoleSender().sendMessage("[dailyRestart.scheduleManager.thread] checking time: " + strings[0] + " " + strings[1]);
+                    }
                 }
             }
             stopServer();
@@ -37,12 +43,20 @@ public class schedule_restart {
     }
 
     private void parseSchedule() {
+        // I can prob write this more efficiently later - remind me
         List<String> uf = config.scheduledRestart_schedule;
         schedule = new String[uf.size()][2];
         for (int i = 0; i < uf.size(); i++)
         {
-            schedule[i][0] = uf.get(i).toUpperCase().replaceAll("-.*","");
-            schedule[i][1] = uf.get(i).toUpperCase().replaceAll("^[^-]*-", "");
+            // verify input to pass fuzz
+            if (uf.get(i).matches("^[A-Za-z]{3}-[0-2][0-9]:[0-5][0-9]$")) {
+                // parse schedule into list
+                schedule[i][0] = uf.get(i).toUpperCase().replaceAll("-.*", "");
+                schedule[i][1] = uf.get(i).toUpperCase().replaceAll("^[^-]*-", "");
+            }else {
+                System.out.println("[Advanced Restart] Error parsing " + uf.get(i) + ". Check Schedule format in config");
+                // skip this element (checker can handle a null value)
+            }
         }
     }
     private void stopServer() {

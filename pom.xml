@@ -6,7 +6,7 @@
 
     <groupId>net.txsla</groupId>
     <artifactId>Advanced-Restart</artifactId>
-    <version>1.2.0-dev</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>Advanced Restart</name>
