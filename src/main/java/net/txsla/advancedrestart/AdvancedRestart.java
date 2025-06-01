@@ -18,8 +18,6 @@ public final class AdvancedRestart extends JavaPlugin {
         int pluginId = 21811;
         Metrics metrics = new Metrics(this, pluginId);
 
-        getLogger().warning("You are currently running a dev build of Advanced Restart");
-
         // load configs
         getLogger().info("Loading configs...");
         config.plugin = this;

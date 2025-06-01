@@ -30,7 +30,7 @@ public class stop_server {
             {
                 AdvancedRestart.executeCommand(command);
             }
-            // give the commands 1 second to execute
+            // give the commands 2 second to execute
             try {
                 Thread.sleep(2000);
             } catch (Exception e) {/*ignore*/}
